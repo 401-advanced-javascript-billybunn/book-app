@@ -53,29 +53,6 @@ function getBook(request, response) {
     .catch(err => handleError(err, response));
 }
 
-function createSearch(request, response) {
-  let url = 'https://www.googleapis.com/books/v1/volumes?q=';
-
-  if (request.body.search[1] === 'title') { url += `+intitle:${request.body.search[0]}`; }
-  if (request.body.search[1] === 'author') { url += `+inauthor:${request.body.search[0]}`; }
-
-  superagent.get(url)
-    .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
-    .then(results => response.render('pages/searches/show', { results: results }))
-    .catch(err => handleError(err, response));
-}
-
-function newSearch(request, response) {
-  response.render('pages/searches/new');
-}
-
-function getBookshelves() {
-  // let SQL = 'SELECT DISTINCT bookshelf FROM books ORDER BY bookshelf;';
-  let SQL = 'SELECT DISTINCT id, name FROM bookshelves ORDER BY name;';
-
-  return client.query(SQL);
-}
-
 function createShelf(shelf) {
   let normalizedShelf = shelf.toLowerCase();
   let SQL1 = `SELECT id from bookshelves where name=$1;`;
@@ -99,6 +76,9 @@ function createShelf(shelf) {
 
 function createBook(request, response) {
   console.log(request.body.bookshelf);
+  let newBookshelf = request.body.bookshelf;
+  request.model.post(newBookshelf);
+  
   createShelf(request.body.bookshelf)
     .then(id => {
       let { title, author, isbn, image_url, description } = request.body;
@@ -111,6 +91,34 @@ function createBook(request, response) {
     })
 
 }
+
+
+
+
+
+function createSearch(request, response) {
+  let url = 'https://www.googleapis.com/books/v1/volumes?q=';
+
+  if (request.body.search[1] === 'title') { url += `+intitle:${request.body.search[0]}`; }
+  if (request.body.search[1] === 'author') { url += `+inauthor:${request.body.search[0]}`; }
+
+  superagent.get(url)
+    .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
+    .then(results => response.render('pages/searches/show', { results: results }))
+    .catch(err => handleError(err, response));
+}
+
+function newSearch(request, response) {
+  response.render('pages/searches/new');
+}
+
+// function getBookshelves() {
+//   // let SQL = 'SELECT DISTINCT bookshelf FROM books ORDER BY bookshelf;';
+//   let SQL = 'SELECT DISTINCT id, name FROM bookshelves ORDER BY name;';
+
+//   return client.query(SQL);
+// }
+
 
 function updateBook(request, response) {
   let { title, author, isbn, image_url, description, bookshelf_id } = request.body;
