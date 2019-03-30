@@ -5,6 +5,9 @@ const router = express.Router();
 const superagent = require('superagent');
 
 const client = require('../../index.js');
+const modelFinder = require('../middleware/model-finder.js')
+
+router.use(modelFinder);
 
 // API routes
 router.get('/', getBooks);
@@ -27,10 +30,8 @@ function Book(info) {
   this.id = info.industryIdentifiers ? `${info.industryIdentifiers[0].identifier}` : '';
 }
 
-function getBooks(request, response) {
-  let SQL = 'SELECT * FROM books;';
-
-  return client.query(SQL)
+function getBooks(request, response, next) {
+  request.model.get()
     .then(results => {
       if (results.rows.rowCount === 0) {
         response.render('pages/searches/new');
