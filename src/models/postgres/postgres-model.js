@@ -6,24 +6,29 @@ class Model {
     // this.bookshelves = 
   }
 
-  get(_id) {
-    if (_id) {
-      console.log('Find me a specific book!!!')
+  get(id) {
+    // GET for a single book
+    if (id) {
+      // Query the SQL db for all the bookshelves
+      let SQL = 'SELECT DISTINCT id, name FROM bookshelves ORDER BY name;';
+      return this.client.query(SQL)
+        .then(shelves => {
+          // Print out all the shelves (id's, names)
+          console.log(shelves.rows)
+          // Attach them to the request object (req.model.shelves)
+          this.shelves = shelves;
 
-      // if an id is passed in
-
-      // SQL query to get all the bookshelves in the db
-      // attach results to request object - this.shelves = result
-
-      // SQL query to get the specific book info from the db
-
-      // return this.client.query(SQL, id)
-
-    } else {
+          // Query the SQL db for the specific book
+          let SQL = 'SELECT books.*, bookshelves.name FROM books INNER JOIN bookshelves on books.bookshelf_id=bookshelves.id WHERE books.id=$1;';
+          let values = [parseInt(id)];
+          return this.client.query(SQL, values)
+        })
+    }
+    // GET for all books (home page)
+    else {
       let SQL = 'SELECT * FROM books;';
       return this.client.query(SQL)
     }
-
   }
 
   post(record) {
