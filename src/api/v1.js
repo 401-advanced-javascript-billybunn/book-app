@@ -7,7 +7,7 @@ const pg = require('pg');
 const swagger = require('swagger-ui-express');
 const superagent = require('superagent');
 
-const modelFinder = require(`${cwd}/src/middleware/model-finder.js`);
+// const modelFinder = require(`${cwd}/src/middleware/model-finder.js`);
 const swaggerDocs = require('../../docs/config/swagger.json');
 
 const router = express.Router();
@@ -18,7 +18,7 @@ client.connect();
 client.on('error', err => console.error(err));
 
 // Evaluate the model, dynamically
-router.param('model', modelFinder);
+// router.param('model', modelFinder);
 
 
 // API Routes
@@ -166,3 +166,5 @@ function deleteBook(request, response) {
 function handleError(error, response) {
   response.render('pages/error', { error: error });
 }
+
+module.exports = router;
