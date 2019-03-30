@@ -9,14 +9,16 @@ const modelFinder = require('../middleware/model-finder.js')
 
 router.use(modelFinder);
 
-// API routes
+// API routes - database
 router.get('/', getBooks);
-router.post('/searches', createSearch);
-router.get('/searches/new', newSearch);
 router.get('/books/:id', getBook);
 router.post('/books', createBook);
 router.put('/books/:id', updateBook);
 router.delete('/books/:id', deleteBook);
+
+// API routes - google books
+router.post('/searches', createSearch);
+router.get('/searches/new', newSearch);
 
 // HELPER FUNCTIONS
 function Book(info) {
@@ -42,6 +44,31 @@ function getBooks(request, response, next) {
     .catch(err => handleError(err, response));
 }
 
+function getBook(request, response) {
+  console.log('getBook', [request.params.id])
+
+/*
+  let id = [request.params.id]
+  request.model.get(id)
+   .then(result => {
+      console.log(request.shelves.rows)
+    })
+*/
+
+
+  getBookshelves()
+    .then(shelves => {
+      let SQL = 'SELECT books.*, bookshelves.name FROM books INNER JOIN bookshelves on books.bookshelf_id=bookshelves.id WHERE books.id=$1;';
+      let values = [request.params.id];
+      client.query(SQL, values)
+        .then(result => {
+          console.log(shelves.rows)
+          response.render('pages/books/show', { book: result.rows[0], bookshelves: shelves.rows })
+        })
+        .catch(err => handleError(err, response));
+    })
+}
+
 function createSearch(request, response) {
   let url = 'https://www.googleapis.com/books/v1/volumes?q=';
 
@@ -56,21 +83,6 @@ function createSearch(request, response) {
 
 function newSearch(request, response) {
   response.render('pages/searches/new');
-}
-
-function getBook(request, response) {
-  getBookshelves()
-    .then(shelves => {
-
-      let SQL = 'SELECT books.*, bookshelves.name FROM books INNER JOIN bookshelves on books.bookshelf_id=bookshelves.id WHERE books.id=$1;';
-      let values = [request.params.id];
-      client.query(SQL, values)
-        .then(result => {
-          console.log(shelves.rows)
-          response.render('pages/books/show', { book: result.rows[0], bookshelves: shelves.rows })
-        })
-        .catch(err => handleError(err, response));
-    })
 }
 
 function getBookshelves() {
