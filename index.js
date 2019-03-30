@@ -6,6 +6,7 @@ require('dotenv').config();
 
 // Connects to postgreSQL
 const postgresConnect = () => {
+  console.log('connecting to postgres');
   const pg = require('pg');
 
   const client = new pg.Client(process.env.DATABASE_URL);
@@ -16,14 +17,15 @@ const postgresConnect = () => {
 
 // Connects to MongoDB
 const mongoConnect = () => {
-  throw null;
-  // const mongoose = require('mongoose');
+  console.log('connecting to mongo');
 
-  // const mongooseOptions = {
-  //   useNewUrlParser: true,
-  //   useCreateIndex: true,
-  // };
-  // mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
+  const mongoose = require('mongoose');
+
+  const mongooseOptions = {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+  };
+  mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
 }
 
 // Looks at env variable and connects to appropriate database
