@@ -77,6 +77,13 @@ class MongoDBModel {
 */
 }
 
-class Books extends MongoDBModel { }
+const booksSchema = require('./books-schema.js')
+const bookshelvesSchema = require('./books-schema.js')
 
-module.exports = new Books(schema);
+class Bookshelves extends MongoDBModel{}
+const Bookshelf = new Bookshelves(bookshelvesSchema);
+
+class Books extends MongoDBModel {}
+const Book = new Books(booksSchema)
+
+module.exports = {Bookshelf, Book};
