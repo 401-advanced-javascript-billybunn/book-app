@@ -1,24 +1,13 @@
 'use strict';
 
-const client = require('../../../../index.js');
-
-
-function getBookshelves() {
-  // let SQL = 'SELECT DISTINCT bookshelf FROM books ORDER BY bookshelf;';
-  let SQL = 'SELECT DISTINCT id, name FROM bookshelves ORDER BY name;';
-
-  return client.query(SQL);
-}
-
 module.exports = (request, response, next) => {
-  console.log('get book');
-
-  getBookshelves()
+  console.log('get-book.js');
+  // gets all records from the bookshelves table/collection
+  request.model.getBookshelves()
     .then(shelves => {
-
-      let SQL = 'SELECT books.*, bookshelves.name FROM books INNER JOIN bookshelves on books.bookshelf_id=bookshelves.id WHERE books.id=$1;';
-      let values = [request.params.id];
-      client.query(SQL, values)
+      let id = [request.params.id];
+      // gets a single book (in an array at [0])
+      request.model.get(id)
         .then(result => {
           console.log(shelves.rows)
           response.render('pages/books/show', { book: result.rows[0], bookshelves: shelves.rows })
@@ -27,5 +16,4 @@ module.exports = (request, response, next) => {
           response.render('pages/error', { error: error })
         });
     })
-
 }

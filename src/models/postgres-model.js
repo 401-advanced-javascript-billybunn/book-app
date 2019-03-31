@@ -12,6 +12,8 @@ class Model {
     // getBook
     if (id) {
       // do some stuff to get a single book from posgreSQL
+      let SQL = 'SELECT books.*, bookshelves.name FROM books INNER JOIN bookshelves on books.bookshelf_id=bookshelves.id WHERE books.id=$1;';
+      return this.client.query(SQL, id)
     }
 
     // getBooks
@@ -21,6 +23,12 @@ class Model {
       let SQL = 'SELECT * FROM books;';
       return this.client.query(SQL)
     }
+  }
+
+  // helper for getBook - gets all records for booksehelves table
+  getBookshelves() {
+    let SQL = 'SELECT DISTINCT id, name FROM bookshelves ORDER BY name;';
+    return this.client.query(SQL);
   }
 
   post(id) {

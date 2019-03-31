@@ -1,15 +1,9 @@
 'use strict';
 
-const client = require('../../../../index.js');
-
-// function that takes search results from a database and renders them to the client with ejs
+// takes search results from a database and renders them to the client with ejs
 
 module.exports = (request, response, next) => {
-  console.log('get books');
-  // console.log('request.model:',request.model);
-
-  // let SQL = 'SELECT * FROM books;';
-
+  console.log('ran get-books.js');
   request.model.get()
     .then(results => {
       console.log('ran get in get-books');

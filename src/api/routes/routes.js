@@ -32,7 +32,7 @@ router.use(methodOverride((request, response) => {
 router.use(modelFinder);
 
 // API Routes
-router.get('/', getBooks); // reads from DB
+router.get('/', getBooks); // reads from DB //
 router.post('/searches', createSearch); // superagent
 router.get('/searches/new', newSearch); // renders a page
 router.get('/books/:id', getBook); // reads 1 from DB
