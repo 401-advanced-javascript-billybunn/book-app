@@ -14,6 +14,7 @@ const createBook = require('./route-handlers/create-book.js');
 const updateBook = require('./route-handlers/update-book.js');
 const deleteBook = require('./route-handlers/delete-book.js');
 
+const modelFinder = require('../../middleware/model-finder.js');
 
 // Application Middleware
 router.use(express.urlencoded({ extended: true }));
@@ -28,14 +29,15 @@ router.use(methodOverride((request, response) => {
   }
 }))
 
+router.use(modelFinder);
 
 // API Routes
-router.get('/', getBooks); // handled
-router.post('/searches', createSearch); // handled
-router.get('/searches/new', newSearch); // handled
-router.get('/books/:id', getBook); // handled
-router.post('/books', createBook); // handled
-router.put('/books/:id', updateBook); // handled
-router.delete('/books/:id', deleteBook); // handled
+router.get('/', getBooks); // reads from DB
+router.post('/searches', createSearch); // superagent
+router.get('/searches/new', newSearch); // renders a page
+router.get('/books/:id', getBook); // reads 1 from DB
+router.post('/books', createBook); // adds 1 to DB
+router.put('/books/:id', updateBook); // edits 1 to DB
+router.delete('/books/:id', deleteBook); // deletes 1 from DB
 
 module.exports = router;

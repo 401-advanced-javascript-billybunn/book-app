@@ -2,8 +2,11 @@
 
 const client = require('../../../../index.js');
 
+// function that takes search results from a database and renders them to the client with ejs
+
 module.exports = (request, response, next) => {
-  console.log('create books');
+  console.log('get books');
+  console.log('request.model:',request.model);
 
   let SQL = 'SELECT * FROM books;';
 
