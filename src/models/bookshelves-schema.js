@@ -4,26 +4,18 @@ const books = require('./books-schema.js');
 const mongoose = require('mongoose');
 require('mongoose-schema-jsonschema')(mongoose);
 
-const teams = mongoose.Schema({
+const bookshelves = mongoose.Schema({
   name: { type:String, required:true },
 }, { toObject:{virtuals:true}, toJSON:{virtuals:true} });
 
-teams.virtual('books', {
+bookshelves.virtual('books', {
   ref: 'books',
   localField: 'name',
-  foreignField: 'team',
+  foreignField: 'bookshelf_id',
   justOne:false,
 });
-/**
- * @param  {} 'find'
- * @param  {} function(
- * @param  {} {try{this.populate('books'
- * @param  {} ;}catch(e
- * @param  {} {console.error('FindError'
- * @param  {} e
- * @param  {} ;}}
- */
-teams.pre('find', function() {
+
+bookshelves.pre('find', function() {
   try {
     this.populate('books');
   }
@@ -32,4 +24,4 @@ teams.pre('find', function() {
   }
 });
 
-module.exports = mongoose.model('teams', teams);
+module.exports = mongoose.model('bookshelves', bookshelves);
