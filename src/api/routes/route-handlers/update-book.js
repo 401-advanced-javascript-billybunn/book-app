@@ -1,17 +1,14 @@
 'use strict';
 
-const client = require('../../../../index.js');
-
-
 module.exports = (request, response, next) => {
-  console.log('update book');
+  console.log('update-book.js');
 
   let { title, author, isbn, image_url, description, bookshelf_id } = request.body;
-  // let SQL = `UPDATE books SET title=$1, author=$2, isbn=$3, image_url=$4, description=$5, bookshelf=$6 WHERE id=$7;`;
-  let SQL = `UPDATE books SET title=$1, author=$2, isbn=$3, image_url=$4, description=$5, bookshelf_id=$6 WHERE id=$7;`;
   let values = [title, author, isbn, image_url, description, bookshelf_id, request.params.id];
 
-  client.query(SQL, values)
+  // updates a book's bookshelf foreign key in the books table/collection
+  request.model.put(values)
+  // client.query(SQL, values)
     .then(response.redirect(`/books/${request.params.id}`))
     .catch(error => {
       response.render('pages/error', { error: error })

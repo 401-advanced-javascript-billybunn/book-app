@@ -65,8 +65,10 @@ class Model {
       })
   }
 
-  put(id) {
+  put(values) {
     // edit a book's bookshelf in the SQL db
+    let SQL = `UPDATE books SET title=$1, author=$2, isbn=$3, image_url=$4, description=$5, bookshelf_id=$6 WHERE id=$7;`;
+    return this.client.query(SQL, values)
   }
 
   delete(id) {
