@@ -12,10 +12,12 @@ const methodOverride = require('method-override');
 const app = express();
 const PORT = process.env.PORT;
 
+const client = require('../index.js');
+
 // Database Setup
-const client = new pg.Client(process.env.DATABASE_URL);
-client.connect();
-client.on('error', err => console.error(err));
+// const client = new pg.Client(process.env.DATABASE_URL);
+// client.connect();
+// client.on('error', err => console.error(err));
 
 // Application Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -44,7 +46,7 @@ app.delete('/books/:id', deleteBook);
 
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
-app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
+// app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
 // HELPER FUNCTIONS
 function Book(info) {
@@ -169,3 +171,12 @@ function deleteBook(request, response) {
 function handleError(error, response) {
   response.render('pages/error', { error: error });
 }
+
+
+let start = (port = process.env.PORT) => {
+  app.listen(port, () => {
+    console.log(`Server Up on ${port}`);
+  });
+};
+  
+module.exports = {app,start};
