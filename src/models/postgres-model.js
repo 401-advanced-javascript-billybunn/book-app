@@ -3,14 +3,23 @@
 const client = require('../../index.js');
 
 class Model {
-  constructor() {
+  constructor(client) {
     this.client = client;
+    console.log('in the model');
+
   }
   get(id) {
+    // getBook
     if (id) {
       // do some stuff to get a single book from posgreSQL
-    } else {
+    }
+
+    // getBooks
+    else {
+      console.log('ran else pgmodel');
       // do some stuff to get all the books from posgreSQL
+      let SQL = 'SELECT * FROM books;';
+      return this.client.query(SQL)
     }
   }
 
@@ -50,7 +59,9 @@ delete()
 
 
 */
+// module.exports = Model;
 
 
+class Books extends Model { }
 
-module.exports = Model;
+module.exports = new Books(client);

@@ -6,12 +6,13 @@ const client = require('../../../../index.js');
 
 module.exports = (request, response, next) => {
   console.log('get books');
-  console.log('request.model:',request.model);
+  // console.log('request.model:',request.model);
 
-  let SQL = 'SELECT * FROM books;';
+  // let SQL = 'SELECT * FROM books;';
 
-  return client.query(SQL)
+  request.model.get()
     .then(results => {
+      console.log('ran get in get-books');
       if (results.rows.rowCount === 0) {
         response.render('pages/searches/new');
       } else {
