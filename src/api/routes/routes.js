@@ -5,6 +5,9 @@ const express = require('express');
 const router = express.Router();
 const methodOverride = require('method-override');
 
+// Middleware to attach a 'model' to each request object
+const modelFinder = require('../../middleware/model-finder.js');
+
 // Route Handlers
 const getBooks = require('./route-handlers/get-books.js');
 const createSearch = require('./route-handlers/create-search.js');
@@ -14,7 +17,6 @@ const createBook = require('./route-handlers/create-book.js');
 const updateBook = require('./route-handlers/update-book.js');
 const deleteBook = require('./route-handlers/delete-book.js');
 
-const modelFinder = require('../../middleware/model-finder.js');
 
 // Application Middleware
 router.use(express.urlencoded({ extended: true }));
@@ -37,7 +39,7 @@ router.post('/searches', createSearch); // superagent
 router.get('/searches/new', newSearch); // renders a page
 router.get('/books/:id', getBook); // reads 1 from DB //
 router.post('/books', createBook); // adds 1 to DB //
-router.put('/books/:id', updateBook); // edits 1 to DB
-router.delete('/books/:id', deleteBook); // deletes 1 from DB
+router.put('/books/:id', updateBook); // edits 1 to DB //
+router.delete('/books/:id', deleteBook); // deletes 1 from DB //
 
 module.exports = router;

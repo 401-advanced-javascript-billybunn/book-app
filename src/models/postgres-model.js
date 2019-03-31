@@ -9,14 +9,14 @@ class Model {
 
   }
   get(id) {
-    // getBook
+    // getBook - just one book
     if (id) {
       // do some stuff to get a single book from posgreSQL
       let SQL = 'SELECT books.*, bookshelves.name FROM books INNER JOIN bookshelves on books.bookshelf_id=bookshelves.id WHERE books.id=$1;';
       return this.client.query(SQL, id)
     }
 
-    // getBooks
+    // getBooks - all the books
     else {
       console.log('ran else pgmodel');
       // do some stuff to get all the books from posgreSQL
@@ -73,34 +73,12 @@ class Model {
 
   delete(id) {
     // delete a book from the SQL db
+    let SQL = 'DELETE FROM books WHERE id=$1;';
+    return this.client.query(SQL, id)
   }
 
 
 }
-
-/* 
-
-get(id)
-// if no id is passed in, 
-creates a SQL query to get all records from the books table
- let SQL = 'SELECT * FROM books;';
-
-  return client.query(SQL)
-
-  
-
-post()
-
-
-put()
-
-
-delete()
-
-
-*/
-// module.exports = Model;
-
 
 class Books extends Model { }
 

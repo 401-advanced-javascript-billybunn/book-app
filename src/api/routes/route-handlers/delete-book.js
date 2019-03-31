@@ -1,15 +1,12 @@
 'use strict';
 
-const client = require('../../../../index.js');
-
-
 module.exports = (request, response, next) => {
-  console.log('delete book');
+  console.log('delete-book.js');
 
-  let SQL = 'DELETE FROM books WHERE id=$1;';
-  let values = [request.params.id];
+  let id = [request.params.id];
 
-  return client.query(SQL, values)
+  // removes a book record from the books table/collection
+  request.model.delete(id)
     .then(response.redirect('/'))
     .catch(error => {
       response.render('pages/error', { error: error })
