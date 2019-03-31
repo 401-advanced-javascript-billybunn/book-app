@@ -1,5 +1,6 @@
 'use strict';
 
-module.exports = (req, res, next) => {
+module.exports = (request, response, next) => {
   console.log('new search');
+  response.render('pages/searches/new');
 }

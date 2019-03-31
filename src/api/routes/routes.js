@@ -31,12 +31,12 @@ router.use(methodOverride((request, response) => {
 
 
 // API Routes
-router.get('/', getBooks);
-router.post('/searches', createSearch);
-router.get('/searches/new', newSearch);
-router.get('/books/:id', getBook);
-router.post('/books', createBook);
-router.put('/books/:id', updateBook);
-router.delete('/books/:id', deleteBook);
+router.get('/', getBooks); // handled
+router.post('/searches', createSearch); // handled
+router.get('/searches/new', newSearch); // handled
+router.get('/books/:id', getBook); // handled
+router.post('/books', createBook); // handled
+router.put('/books/:id', updateBook); // handled
+router.delete('/books/:id', deleteBook); // handled
 
 module.exports = router;
