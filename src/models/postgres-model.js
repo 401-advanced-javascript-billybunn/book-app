@@ -2,7 +2,7 @@
 
 const client = require('../../index.js');
 
-class Model {
+class PostgreSQLModel {
   constructor(client) {
     this.client = client;
     console.log('in the model');
@@ -80,6 +80,6 @@ class Model {
 
 }
 
-class Books extends Model { }
+class Books extends PostgreSQLModel { }
 
 module.exports = new Books(client);
