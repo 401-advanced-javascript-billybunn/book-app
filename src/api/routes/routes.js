@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 const methodOverride = require('method-override');
 
-// Esoteric resources - Route Handlers
+// Route Handlers
 const getBooks = require('./route-handlers/get-books.js');
 const createSearch = require('./route-handlers/create-search.js');
 const newSearch = require('./route-handlers/new-search.js');
@@ -27,7 +27,6 @@ router.use(methodOverride((request, response) => {
     return method;
   }
 }))
-
 
 
 // API Routes
