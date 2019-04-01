@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * Routes module
+ * Listens for each route and calls appropriate handler function
+ * @module src/routes/routes
+ */
+
 // 3rd Party Resources
 const express = require('express');
 const router = express.Router();
@@ -22,6 +28,11 @@ const deleteBook = require('./route-handlers/delete-book.js');
 router.use(express.urlencoded({ extended: true }));
 router.use(express.static('public'));
 
+/**
+ * Method Override
+ * Middleware to find HTTP get/post requests with a custom attribute in the request.body. Changes a request with "_method" in the request body to the REST method specified
+ * @param req {object} Express Request Object
+ */
 router.use(methodOverride((request, response) => {
   if (request.body && typeof request.body === 'object' && '_method' in request.body) {
     // look in urlencoded POST bodies and delete it

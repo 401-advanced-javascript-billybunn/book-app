@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: server.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,53 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: server.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+const express = require('express');
+const app = express();
+
+// Esoteric Resources
+const routes = require('../src/api/routes/routes.js');
+const errorHandler = require('../src/middleware/500.js');
+const notFound = require( '../src/middleware/404.js' );
+
+// Set the view engine for server-side templating
+app.set('view engine', 'ejs');
+
+app.use('/docs', express.static('docs'));
 
 
-    <h3> </h3>
+// Routes
+app.use(routes);
 
+// Catchalls
+app.use(notFound);
+app.use(errorHandler);
 
+/**
+ * Starts server on specified port
+ *
+ * @param {*} port defaults to port=process.env.PORT
+ */
+let start = (port = process.env.PORT) => {
+  app.listen(port, () => {
+    console.log(`Server Up on ${port}`);
+  });
+};
 
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = {app,start};
+</code></pre>
+        </article>
+    </section>
 
 
 

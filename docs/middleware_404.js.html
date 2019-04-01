@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: middleware/404.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,34 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: middleware/404.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+/**
+ * 404 Middleware
+ * @module middleware/404
+ */
 
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * Sends a JSON Formatted 404 Response
+ * @param req {object} Express Request Object
+ * @param res {object} Express Response Object
+ * @param next {function} Express middleware next()
+ */
+module.exports = (req,res,next) => {
+  let error = { error: 'Resource Not Found' };
+  res.status(404).json(error).end();
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

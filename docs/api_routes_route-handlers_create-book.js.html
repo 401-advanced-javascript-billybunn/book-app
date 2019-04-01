@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: api/routes/route-handlers/create-book.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,49 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: api/routes/route-handlers/create-book.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+/**
+ * Create Book Route Handler
+ * @module routes/route-handlers/create-book
+ */
 
+/**
+ * Adds a single book to the database with a bookshelf identifier.
+ * @example router.post('/books', createBook);
+ * @param req {object} Express Request Object (required params: model, id)
+ * @param res {object} Express Response Object
+ * @param next {function} Express middleware next()
+ */
+module.exports = (request, response, next) => {
+  console.log('create-book.js');
 
-    <h3> </h3>
+  // returns the unique identifier for a bookshelf
+  request.model.createShelf(request.body.bookshelf)
+    .then(id => {
+      let { title, author, isbn, image_url, description } = request.body;
+      let values = [title, author, isbn, image_url, description, id];
 
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+      // adds a book to the database with values from the request.body
+      request.model.post(values)
+      // client.query(SQL, values)
+        .then(result => response.redirect(`/books/${result.rows[0].id}`))
+        .catch(error => {
+          response.render('pages/error', { error: error })
+        });
+    })
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

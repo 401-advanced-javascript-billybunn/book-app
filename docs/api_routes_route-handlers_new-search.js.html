@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: api/routes/route-handlers/new-search.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,35 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: api/routes/route-handlers/new-search.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+/**
+ * New Search Route Handler
+ * @module routes/route-handlers/new-search
+ */
 
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+/**
+ * Renders the search form view to the client with ejs.
+ * @example router.get('/searches/new', newSearch);
+ * @param req {object} Express Request Object (required params: model, id)
+ * @param res {object} Express Response Object
+ * @param next {function} Express middleware next()
+ */
+module.exports = (request, response, next) => {
+  console.log('new search');
+  response.render('pages/searches/new');
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

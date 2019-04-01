@@ -1,5 +1,16 @@
 'use strict';
+/**
+ * Delete Book Route Handler
+ * @module routes/route-handlers/delete-book
+ */
 
+/**
+ * Removes a single book from the database.
+ * @example router.delete('/books/:id', deleteBook);
+ * @param req {object} Express Request Object (required params: model, id)
+ * @param res {object} Express Response Object
+ * @param next {function} Express middleware next()
+ */
 module.exports = (request, response, next) => {
   console.log('delete-book.js');
 

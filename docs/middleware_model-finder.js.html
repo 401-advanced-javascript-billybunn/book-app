@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: middleware/model-finder.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,41 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: middleware/model-finder.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+/**
+ * Model Finder Middleware
+ * @module middleware/model-finder
+ */
 
+/**
+ * Model Finder Middleware
+ * Evaluates the DB env variable and attaches a database model the the request object body (either postgres or mongo). Returns an instance of the specified model.
+ * @param req {object} Express Request Object
+ * @param res {object} Express Response Object
+ * @param next {function} Express middleware next()
+ */
+module.exports = (req, res, next) => {
+  console.log('ran model finder!');
+  // console.log(req.params);
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+  const database = process.env.DB;
+  // console.log('DB:', typeof database, database);
+  req.model = require(`../models/${database}-model.js`);
+  // console.log('request.model:',req.model);
+  next();
+};
+</code></pre>
+        </article>
+    </section>
 
 
 

@@ -1,5 +1,16 @@
 'use strict';
+/**
+ * Create Book Route Handler
+ * @module routes/route-handlers/create-book
+ */
 
+/**
+ * Adds a single book to the database with a bookshelf identifier.
+ * @example router.post('/books', createBook);
+ * @param req {object} Express Request Object (required params: model, id)
+ * @param res {object} Express Response Object
+ * @param next {function} Express middleware next()
+ */
 module.exports = (request, response, next) => {
   console.log('create-book.js');
 
