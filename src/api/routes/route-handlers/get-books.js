@@ -4,6 +4,7 @@
 
 module.exports = (request, response, next) => {
   console.log('ran get-books.js');
+  console.log(request.param.model);
   request.model.get()
     .then(results => {
       console.log('ran get in get-books');

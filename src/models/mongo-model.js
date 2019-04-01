@@ -1,108 +1,82 @@
 'use strict';
 
+// const bookshelvesSchema = require('./bookshelves-schema.js')
+
 class MongoDBModel {
   constructor(schema) {
     this.schema = schema;
+    console.log('ran mongomodel constructor');
   }
 
   get(id) {
-    let queryObject = id ? { id } : {};
-    return this.schema.find(queryObject);
+    // Reformats the mongo result to a promise that resolves
+    // to an object with the structure a SQL result
+    // because that's what the views expect.
+    if (id) {
+      // getBook returns book data at [0], and shelf data at [1]
+      const bookData = this.schema.findById(id).then(book => {
+        const data = { rows: [book], rowCount: [book].length };
+        return new Promise(resolve => resolve(data));
+      });
+      // get all the bookshelves
+      const shelfData = bookshelvesSchema.find().then(shelves => {
+        const data = { rows: shelves, rowCount: shelves.length };
+        return new Promise(resolve => resolve(data));
+      });
+      return Promise.all([bookData, shelfData]);
+    } else {
+      // getBooks just returns book data
+      return this.schema.find().then(result => {
+        const data = { rows: result, rowCount: result.length };
+        return new Promise(resolve => resolve([data]));
+      });
+    }
   }
 
-  post(record) {
-    let newRecord = new this.schema(record);
-    return newRecord.save();
-  }
+  // get(id) {
+  //   console.log('ran mongo get');
+  //   console.log(id);
 
-  put(id, record) {
-    return this.schema.findByIdAndUpdate(id, record, { new: true });
-  }
+  //   let queryObject = id ? { id } : {};
+  //   return this.schema.find(queryObject);
+  // }
 
-  delete(id) {
-    return this.schema.findByIdAndDelete(id);
-  }
+  // post(record) {
+  //   console.log('ran mongo post')
+  //   console.log(record);
+
+  //   let newRecord = new this.schema(record);
+  //   return newRecord.save();
+  // }
+
+  // put(id, record) {
+  //   console.log('ran mongo put')
+  //   console.log(id, record);
+
+
+  //   return this.schema.findByIdAndUpdate(id, record, { new: true });
+  // }
+
+  // delete(id) {
+  //   console.log('ran mongo delete')
+
+  //   return this.schema.findByIdAndDelete(id);
+  // }
 
 }
 
-/*
-get(id) {
-  // getBook - just one book
-  if (id) {
-    // do some stuff to get a single book from posgreSQL
-    let SQL = 'SELECT books.*, bookshelves.name FROM books INNER JOIN bookshelves on books.bookshelf_id=bookshelves.id WHERE books.id=$1;';
-    return this.client.query(SQL, id)
-  }
-
-  // getBooks - all the books
-  else {
-    console.log('ran else pgmodel');
-    // do some stuff to get all the books from posgreSQL
-    let SQL = 'SELECT * FROM books;';
-    return this.client.query(SQL)
-  }
-}
-
-// helper for getBook (GET) - gets all records for booksehelves table
-getBookshelves() {
-  let SQL = 'SELECT DISTINCT id, name FROM bookshelves ORDER BY name;';
-  return this.client.query(SQL);
-}
-
-post(values) {
-  // add a book to the SQL database
-  let SQL = 'INSERT INTO books(title, author, isbn, image_url, description, bookshelf_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING id;';
-  return this.client.query(SQL, values)
-}
-
-// helper for createBook (POST) - checks bookshelves table for text entered & returns a bookshelf id
-// creates a new record in the bookshelves table if the one entered isn't found
-createShelf(shelf) {
-  // INPUT <- bookshelf name from user
-  // OUTPUT -> unique id for bookshelf in bookshelves table
-  let normalizedShelf = shelf.toLowerCase();
-  let SQL1 = `SELECT id from bookshelves where name=$1;`;
-  let values1 = [normalizedShelf];
-
-  return this.client.query(SQL1, values1)
-    .then(results => {
-      // if the bookshelf was already in the bookshelves table, return the id for that shelf
-      if (results.rowCount) {
-        return results.rows[0].id;
-
-        // if it wasn't, make a new shelf in the table, return the id for that shelf
-      } else {
-        let INSERT = `INSERT INTO bookshelves(name) VALUES($1) RETURNING id;`;
-        let insertValues = [shelf];
-
-        return this.client.query(INSERT, insertValues)
-          .then(results => {
-            return results.rows[0].id;
-          })
-      }
-    })
-}
-
-put(values) {
-  // edit a book's bookshelf in the SQL db
-  let SQL = `UPDATE books SET title=$1, author=$2, isbn=$3, image_url=$4, description=$5, bookshelf_id=$6 WHERE id=$7;`;
-  return this.client.query(SQL, values)
-}
-
-delete(id) {
-  // delete a book from the SQL db
-  let SQL = 'DELETE FROM books WHERE id=$1;';
-  return this.client.query(SQL, id)
-}
-*/
-
+// const booksSchema = require('./books-schema.js')
+// console.log(booksSchema);
 const booksSchema = require('./books-schema.js')
-const bookshelvesSchema = require('./books-schema.js')
 
-class Bookshelves extends MongoDBModel { }
-const Bookshelf = new Bookshelves(bookshelvesSchema);
+// class Bookshelves extends MongoDBModel { }
+// const Bookshelf = new Bookshelves(bookshelvesSchema);
 
-class Books extends MongoDBModel { }
-const Book = new Books(booksSchema)
+// class Books extends MongoDBModel { }
+// const Book = new Books(booksSchema)
+// module.exports = new Books(booksSchema);
 
-module.exports = { Bookshelf, Book };
+
+const Book = new MongoDBModel(booksSchema)
+
+module.exports = Book;

@@ -1,4 +1,5 @@
 'use strict';
+console.log('books schema')
 
 const mongoose = require('mongoose');
 require('mongoose-schema-jsonschema')(mongoose);
@@ -24,10 +25,9 @@ const books = mongoose.Schema({
     type: String,
     required: true
   },
-  bookshelf: {
+  bookshelf_id: {
     type: String,
     required: true
   },
 });
-
 module.exports = mongoose.model('books', books);
