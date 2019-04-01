@@ -32,5 +32,5 @@ const mongoConnect = () => {
 (process.env.DB === 'mongo' ? mongoConnect : postgresConnect)();
 
 // require('./src/server.js').start(process.env.PORT);
-require('./src/new-server.js').start(process.env.PORT);
+require('./src/server.js').start(process.env.PORT);
 
