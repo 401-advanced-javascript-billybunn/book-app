@@ -40,7 +40,7 @@
 <!-- swagger -->
 [5]: http://xyz.com
 <!-- jsdoc-->
-[6]: heroku-link/docs 
+[6]: https://billybunn-book-app-postgres.herokuapp.com/docs 
 
 ## Book App v2
 

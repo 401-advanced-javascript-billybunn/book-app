@@ -11,6 +11,9 @@ const notFound = require( '../src/middleware/404.js' );
 // Set the view engine for server-side templating
 app.set('view engine', 'ejs');
 
+app.use('/docs', express.static('docs'));
+
+
 // Routes
 app.use(routes);
 

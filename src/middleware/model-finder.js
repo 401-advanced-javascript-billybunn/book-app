@@ -7,6 +7,6 @@ module.exports = (req, res, next) => {
   const database = process.env.DB;
   // console.log('DB:', typeof database, database);
   req.model = require(`../models/${database}-model.js`);
-  console.log('request.model:',req.model);
+  // console.log('request.model:',req.model);
   next();
 };
